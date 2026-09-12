@@ -28,6 +28,8 @@
             --text-color: #ffffff;
             --main-color: #a855f7; /* Tím Neon */
             --main-color-glow: rgba(168, 85, 247, 0.5);
+            --pink-cute: #ff75a0;
+            --pink-glow: rgba(255, 117, 160, 0.6);
         }
 
         body {
@@ -38,15 +40,15 @@
             min-height: 100vh;
         }
 
-        /* MÀN HÌNH CHÀO MỪNG (WELCOME OVERLAY) */
+        /* MÀN HÌNH CHÀO MỪNG DỄ THƯƠNG (WELCOME OVERLAY) */
         #welcome-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(8, 8, 8, 0.95);
-            backdrop-filter: blur(15px);
+            background: rgba(15, 10, 25, 0.92);
+            backdrop-filter: blur(20px);
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -61,44 +63,90 @@
             visibility: hidden;
         }
 
-        .welcome-content {
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 117, 160, 0.3);
+            border-radius: 30px;
+            padding: 40px 30px;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.25), inset 0 0 15px rgba(255, 117, 160, 0.15);
+            max-width: 480px;
+            width: 90%;
             text-align: center;
-            animation: pulseText 2s infinite;
+            position: relative;
+            animation: cardFloat 3s ease-in-out infinite alternate;
         }
 
-        .welcome-content i {
-            font-size: 60px;
-            color: var(--main-color);
+        @keyframes cardFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        /* Icon trái tim đập nhịp cute */
+        .cute-heart-icon {
+            font-size: 75px;
+            color: var(--pink-cute);
             margin-bottom: 20px;
-            text-shadow: 0 0 20px var(--main-color-glow);
+            display: inline-block;
+            text-shadow: 0 0 25px var(--pink-glow), 0 0 40px var(--main-color);
+            animation: heartBeat 1.2s infinite ease-in-out;
         }
 
-        .welcome-content h2 {
-            font-size: 28px;
-            color: var(--text-color);
-            margin-bottom: 10px;
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.25); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+
+        .welcome-card h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            background: linear-gradient(45deg, #ff75a0, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Khung lời xin lỗi đáng yêu */
+        .apology-box {
+            background: rgba(255, 117, 160, 0.1);
+            border: 1px dashed var(--pink-cute);
+            border-radius: 15px;
+            padding: 12px 18px;
+            margin: 15px 0 20px;
+            color: #ffe4e6;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .apology-box i {
+            color: var(--pink-cute);
+            margin-right: 5px;
+        }
+
+        .welcome-hint {
+            color: #bbb;
+            font-size: 13px;
+            margin-bottom: 20px;
         }
 
         .welcome-btn {
-            margin-top: 25px;
-            padding: 14px 35px;
-            background: var(--main-color);
-            color: #080808;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 30px;
-            box-shadow: 0 0 25px var(--main-color-glow);
-            transition: 0.3s;
+            display: inline-block;
+            padding: 12px 35px;
+            background: linear-gradient(45deg, #ff75a0, #a855f7);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 0 20px var(--pink-glow);
+            transition: 0.3s ease;
         }
 
         .welcome-btn:hover {
             transform: scale(1.08);
-            box-shadow: 0 0 35px var(--main-color);
-        }
-
-        @keyframes pulseText {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            box-shadow: 0 0 30px var(--pink-cute);
         }
 
         /* HEADER & NAVBAR */
@@ -447,13 +495,22 @@
 </head>
 <body>
 
-    <!-- Màn hình chào mừng -->
+    <!-- Màn hình chào mừng siêu cute -->
     <div id="welcome-overlay" onclick="startWebsite()">
-        <div class="welcome-content">
-            <i class="fa-solid fa-compact-disc fa-spin"></i>
-            <h2>Chào mừng các con vợ đến với chuyến du lịch LGBT</h2>
-            <p style="color: #aaa; font-size: 14px;">Bấm bất kỳ đâu để vào trang & đặt tour LGBT</p>
-            <div class="welcome-btn">Đặt Tour</div>
+        <div class="welcome-card">
+            <!-- Icon Trái tim nhịp đập -->
+            <i class="fa-solid fa-heart cute-heart-icon"></i>
+            <h2> Helu Mỹ Duyên</h2>
+            
+            <!-- Lời xin lỗi chân thành & dễ thương -->
+            <div class="apology-box">
+                <i class="fa-solid fa-face-sad-cry"></i> 
+                <strong>Cho iem xin lỗi nho</strong><br>
+                Htruoc điện thoại iem bị hư với vẽ cái đồ án sai bị chửi xong chơi gem đợi chị chơi xong đợi xong chị k chơi với em em dỗi bẩn nên block cho iem xin lỗi nho 🥺❤️
+            </div>
+
+            <p class="welcome-hint">Tiện vào xem web của iem đi =)) ✨</p>
+            <div class="welcome-btn">Lẹt Gô💕</div>
         </div>
     </div>
 
@@ -535,13 +592,11 @@
         <h2 class="heading">Kỹ Năng <span>Bệnh Hoạn</span></h2>
 
         <div class="grid-container">
-            <!-- Kỹ năng Hacker (Có Video Khung Điện Thoại) -->
             <div class="card-box">
                 <i class="fa-solid fa-terminal"></i>
                 <h3>Hacker Lỏd</h3>
                 <p>Chuyên gia thâm nhập hệ thống, hack WiFi nhà hàng xóm & soi mật khẩu Facebook bằng mắt thường.</p>
                 
-                <!-- Khung giả lập màn hình điện thoại -->
                 <div class="phone-mockup">
                     <video controls playsinline preload="metadata">
                         <source src="hacker.mp4" type="video/mp4">
@@ -552,7 +607,6 @@
                 <span class="tag">Cyber Security Lỏd</span>
             </div>
 
-            <!-- Kỹ năng 1 -->
             <div class="card-box">
                 <i class="fa-solid fa-hand-holding-heart"></i>
                 <h3>Trùm flo hcuong</h3>
@@ -560,7 +614,6 @@
                 <span class="tag">Pro Player Trượt</span>
             </div>
 
-            <!-- Kỹ năng 2 -->
             <div class="card-box">
                 <i class="fa-solid fa-pickaxe"></i>
                 <h3>Minecraft</h3>
@@ -569,7 +622,6 @@
                 <span class="tag">Kỷ Lục Chết Mine</span>
             </div>
 
-            <!-- Kỹ năng 3 -->
             <div class="card-box">
                 <i class="fa-solid fa-people-group"></i>
                 <h3>Cân 2 Bái Tre</h3>
@@ -577,7 +629,6 @@
                 <span class="tag">Kẻ hủy diệt bái tre</span>
             </div>
 
-            <!-- Kỹ năng 4 -->
             <div class="card-box">
                 <i class="fa-solid fa-mask"></i>
                 <h3>Gạ Gẫm Bệnh Hoạn</h3>
@@ -592,7 +643,6 @@
         <h2 class="heading">Kinh Nghiệm <span>Thực Chiến</span></h2>
 
         <div class="grid-container">
-            <!-- Kinh nghiệm 1 -->
             <div class="card-box">
                 <i class="fa-solid fa-hotel"></i>
                 <h3>CEO Nhà Khách "A-Z"</h3>
@@ -600,7 +650,6 @@
                 <span class="tag">3 Năm Kinh Nghiệm</span>
             </div>
 
-            <!-- Kinh nghiệm 2 -->
             <div class="card-box">
                 <i class="fa-solid fa-skull-crossbones"></i>
                 <h3>Có kinh nghiệm trong việc phá vi điều khiển</h3>
@@ -608,7 +657,6 @@
                 <span class="tag">Kinh Nghiệm Phá Đồ</span>
             </div>
 
-            <!-- Kinh nghiệm 3 -->
             <div class="card-box">
                 <i class="fa-solid fa-award"></i>
                 <h3>Chuyên Gia "Bái Tre"</h3>
