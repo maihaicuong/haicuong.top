@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Cá Nhân - Hải Cường</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* RESET & CSS CHUNG */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            border: none;
+            outline: none;
+        }
+
+        :root {
+            --bg-color: #080808;
+            --second-bg-color: #131313;
+            --text-color: #ffffff;
+            --main-color: #a855f7; /* Tím Neon */
+            --main-color-glow: rgba(168, 85, 247, 0.5);
+        }
+
+        body {
+            background: linear-gradient(rgba(8, 8, 8, 0.65), rgba(8, 8, 8, 0.65)), url('nen.jpg') no-repeat center center/cover;
+            background-attachment: fixed;
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* MÀN HÌNH CHÀO MỪNG (WELCOME OVERLAY) */
+        #welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 8, 8, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #welcome-overlay.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .welcome-content {
+            text-align: center;
+            animation: pulseText 2s infinite;
+        }
+
+        .welcome-content i {
+            font-size: 60px;
+            color: var(--main-color);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px var(--main-color-glow);
+        }
+
+        .welcome-content h2 {
+            font-size: 28px;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .welcome-btn {
+            margin-top: 25px;
+            padding: 14px 35px;
+            background: var(--main-color);
+            color: #080808;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 30px;
+            box-shadow: 0 0 25px var(--main-color-glow);
+            transition: 0.3s;
+        }
+
+        .welcome-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 35px var(--main-color);
+        }
+
+        @keyframes pulseText {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        /* HEADER & NAVBAR */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 8%;
+            background: rgba(8, 8, 8, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 28px;
+            color: var(--main-color);
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .logo:hover {
+            text-shadow: 0 0 15px var(--main-color);
+        }
+
+        .navbar {
+            display: flex;
+        }
+
+        .nav-item {
+            font-size: 16px;
+            color: var(--text-color);
+            font-weight: 500;
+            margin-left: 30px;
+            transition: 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--main-color);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--main-color);
+            left: 0;
+            bottom: -5px;
+            transition: 0.3s;
+        }
+
+        .nav-item:hover::after,
+        .nav-item.active::after {
+            width: 100%;
+        }
+
+        #menu-icon {
+            font-size: 28px;
+            color: var(--main-color);
+            display: none;
+            cursor: pointer;
+        }
+
+        /* TAB CONTENT */
+        .tab-content {
+            display: none;
+            min-height: 100vh;
+            padding: 130px 8% 60px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* TAB 1: TRANG CHỦ */
+        #home.active {
+            flex-direction: row;
+            gap: 60px;
+        }
+
+        .home-img {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .purple-moon {
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            background: linear-gradient(135deg, #a855f7, #5b21b6);
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 50px var(--main-color-glow);
+            animation: moonPulse 4s infinite alternate;
+        }
+
+        @keyframes moonPulse {
+            0% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.4); transform: scale(0.98); }
+            100% { box-shadow: 0 0 70px rgba(168, 85, 247, 0.8); transform: scale(1.02); }
+        }
+
+        .avatar-img {
+            position: relative;
+            z-index: 2;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .home-content {
+            max-width: 600px;
+        }
+
+        .home-content h1 {
+            font-size: 52px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .home-content h1 span { color: var(--main-color); }
+
+        .home-content .typing-text {
+            font-size: 30px;
+            font-weight: 600;
+            margin: 10px 0 20px;
+        }
+
+        .home-content .typing-text span { color: var(--main-color); }
+
+        .home-content p {
+            font-size: 15px;
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        .social-icons {
+            margin: 25px 0 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 42px;
+            height: 42px;
+            background: transparent;
+            border: 2px solid var(--main-color);
+            border-radius: 50%;
+            font-size: 18px;
+            color: var(--main-color);
+            transition: 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #080808;
+            background-color: var(--main-color);
+            box-shadow: 0 0 20px var(--main-color);
+            transform: translateY(-5px);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            background: transparent;
+            border: 2px solid var(--main-color);
+            border-radius: 30px;
+            font-size: 16px;
+            color: var(--main-color);
+            letter-spacing: 1px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--main-color);
+            color: #080808;
+            box-shadow: 0 0 25px var(--main-color);
+            transform: scale(1.05);
+        }
+
+        /* NỀN CARD CHUNG CHO CÁC MỤC */
+        .heading {
+            font-size: 45px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .heading span { color: var(--main-color); }
+
+        .grid-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            flex-wrap: wrap;
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card-box {
+            flex: 1 1 300px;
+            max-width: 360px;
+            background: rgba(19, 19, 19, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 35px 25px;
+            border-radius: 20px;
+            border: 2px solid rgba(168, 85, 247, 0.2);
+            text-align: center;
+            transition: 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-box:hover {
+            border-color: var(--main-color);
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px var(--main-color-glow);
+        }
+
+        .card-box i {
+            font-size: 45px;
+            color: var(--main-color);
+            margin-bottom: 20px;
+        }
+
+        .card-box h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .card-box p {
+            font-size: 14px;
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .card-box .tag {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 4px 12px;
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--main-color);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* TÙY CHỈNH KHUNG VIDEO MÀN HÌNH ĐIỆN THOẠI */
+        .phone-mockup {
+            width: 100%;
+            max-width: 240px;
+            margin: 15px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--main-color);
+            box-shadow: 0 0 15px var(--main-color-glow);
+            background: #000;
+        }
+
+        .phone-mockup video {
+            width: 100%;
+            height: auto;
+            max-height: 420px;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* NÚT ĐIỀU KHIỂN NHẠC GÓC PHẢI */
+        #music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--main-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #080808;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--main-color-glow);
+            z-index: 1000;
+            transition: 0.3s ease;
+        }
+
+        #music-control:hover { transform: scale(1.1); }
+
+        .music-spin { animation: spin 3s linear infinite; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .header { padding: 20px 5%; }
+            #home.active { flex-direction: column; text-align: center; gap: 30px; }
+            .home-img { width: 300px; height: 300px; }
+            .purple-moon { width: 280px; height: 280px; }
+            .avatar-img { width: 260px; height: 260px; }
+            .home-content h1 { font-size: 40px; }
+            .home-content .typing-text { font-size: 24px; }
+            .social-icons { justify-content: center; }
+        }
+
+        @media (max-width: 768px) {
+            #menu-icon { display: block; }
+            .navbar {
+                position: absolute; top: 100%; left: 0; width: 100%;
+                padding: 15px 5%; background: rgba(8, 8, 8, 0.95);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                display: none; flex-direction: column;
+            }
+            .navbar.active { display: flex; }
+            .nav-item { font-size: 18px; margin: 15px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Màn hình chào mừng -->
+    <div id="welcome-overlay" onclick="startWebsite()">
+        <div class="welcome-content">
+            <i class="fa-solid fa-compact-disc fa-spin"></i>
+            <h2>WELCOME TO MY WEBSITE</h2>
+            <p style="color: #aaa; font-size: 14px;">Bấm bất kỳ đâu để vào trang & nghe nhạc</p>
+            <div class="welcome-btn">TRẢI NGHIỆM NGAY</div>
+        </div>
+    </div>
+
+    <!-- Trình phát nhạc -->
+    <audio id="bg-music" loop>
+        <source src="nhac.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Nút Bật/Tắt Nhạc -->
+    <div id="music-control" onclick="toggleMusic()" title="Bật/Tắt Nhạc">
+        <i class="fa-solid fa-music" id="music-icon"></i>
+    </div>
+
+    <!-- Header / Menu Nav -->
+    <header class="header">
+        <div class="logo" onclick="switchTab('home')">Hải Cường</div>
+        
+        <i class="fa-solid fa-bars" id="menu-icon"></i>
+
+        <nav class="navbar">
+            <span class="nav-item active" onclick="switchTab('home')">Trang chủ</span>
+            <span class="nav-item" onclick="switchTab('services')">Dịch vụ</span>
+            <span class="nav-item" onclick="switchTab('skills')">Kỹ năng</span>
+            <span class="nav-item" onclick="switchTab('experience')">Kinh nghiệm</span>
+        </nav>
+    </header>
+
+    <!-- TAB 1: TRANG CHỦ -->
+    <div class="tab-content active" id="home">
+        <div class="home-img">
+            <div class="purple-moon"></div>
+            <img src="./avatar.jpg.jpg" alt="Hải Cường Avatar" class="avatar-img">
+        </div>
+
+        <div class="home-content">
+            <h1>Xin chào, tôi là <span>Hải Cường</span></h1>
+            <h3 class="typing-text">Tôi là <span class="multiple-text"></span></h3>
+            <p>
+                Thật ra tôi là 1 thằng pín thái vô cùng mê mấy bé LGBT mini =)) tôi nghiện hentai nghiện pỏn húp được biệt làm film geyy =))
+            </p>
+
+            <div class="social-icons">
+                <a href="https://www.facebook.com/User.Haicg" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.tiktok.com/@hae.kang811" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://discord.com/users/haicgigbtgeyylooj" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
+            </div>
+
+            <button class="btn" onclick="switchTab('services')">Thuê tui đi 500k/1đêm hoi =))</button>
+        </div>
+    </div>
+
+    <!-- TAB 2: DỊCH VỤ -->
+    <div class="tab-content" id="services">
+        <h2 class="heading">Dịch Vụ <span>Của Tôi</span></h2>
+
+        <div class="grid-container">
+            <div class="card-box">
+                <i class="fa-solid fa-plane-departure"></i>
+                <h3>Tour Du Lịch LGBT</h3>
+                <p>Mở các tour du lịch trải nghiệm độc đáo, xịn xò dành riêng cho cộng đồng LGBT mini quẩy xuyên đêm.</p>
+            </div>
+
+            <div class="card-box">
+                <i class="fa-solid fa-gauge-high"></i>
+                <h3>Độ Pi Tơ</h3>
+                <p>Chuyên độ Pi Tơ, kiểng xe, nâng cấp công suất bốc đầu cực tít cho anh em mê tốc độ.</p>
+            </div>
+
+            <div class="card-box">
+                <i class="fa-solid fa-user-ninja"></i>
+                <h3>Đi Khách</h3>
+                <p>Dịch vụ đi khách đặc biệt 500k/1 đêm, tâm sự thâu đêm, tiếp đón tận tình chu đáo từ A-Z =))</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: KỸ NĂNG -->
+    <div class="tab-content" id="skills">
+        <h2 class="heading">Kỹ Năng <span>Bệnh Hoạn</span></h2>
+
+        <div class="grid-container">
+            <!-- Kỹ năng Hacker (Có Video Khung Điện Thoại) -->
+            <div class="card-box">
+                <i class="fa-solid fa-terminal"></i>
+                <h3>Hacker Lỏd</h3>
+                <p>Chuyên gia thâm nhập hệ thống, hack WiFi nhà hàng xóm & soi mật khẩu Facebook bằng mắt thường.</p>
+                
+                <!-- Khung giả lập màn hình điện thoại -->
+                <div class="phone-mockup">
+                    <video controls playsinline preload="metadata">
+                        <source src="hacker.mp4" type="video/mp4">
+                        Trình duyệt của bạn không hỗ trợ thẻ video.
+                    </video>
+                </div>
+
+                <span class="tag">Cyber Security Lỏd</span>
+            </div>
+
+            <!-- Kỹ năng 1 -->
+            <div class="card-box">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <h3>Trùm flo hcuong</h3>
+                <p>múa flo đang hay trượt hoa thích ảo game cân 5 </p>
+                <span class="tag">Pro Player Trượt</span>
+            </div>
+
+            <!-- Kỹ năng 2 -->
+            <div class="card-box">
+                <i class="fa-solid fa-pickaxe"></i>
+                <h3>Minecraft</h3>
+                <p>Đi mine chết 10 phút 3 lần chết liên tục chuẩn phế vật.</p>
+
+                <span class="tag">Kỷ Lục Chết Mine</span>
+            </div>
+
+            <!-- Kỹ năng 3 -->
+            <div class="card-box">
+                <i class="fa-solid fa-people-group"></i>
+                <h3>Cân 2 Bái Tre</h3>
+                <p>Kỹ năng tiếp khách hàng đỉnh cao: Cân một lúc 2 bái tre cùng 1 thời điểm mà không hề nao núng hay bị gãy lưng =))</p>
+                <span class="tag">Kẻ hủy diệt bái tre</span>
+            </div>
+
+            <!-- Kỹ năng 4 -->
+            <div class="card-box">
+                <i class="fa-solid fa-mask"></i>
+                <h3>Gạ Gẫm Bệnh Hoạn</h3>
+                <p>Đặc biệt thích & chuyên trị tiếp các anh có gu "bệnh hoạn, quái dị". Càng dị càng khoái, giao lưu trao đổi fetish xuyên đêm =))</p>
+                <span class="tag">Sở thích của em cường</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: KINH NGHIỆM -->
+    <div class="tab-content" id="experience">
+        <h2 class="heading">Kinh Nghiệm <span>Thực Chiến</span></h2>
+
+        <div class="grid-container">
+            <!-- Kinh nghiệm 1 -->
+            <div class="card-box">
+                <i class="fa-solid fa-hotel"></i>
+                <h3>CEO Nhà Khách "A-Z"</h3>
+                <p><strong>2023 - Hiện tại:</strong> Đã phục vụ hơn 999+ khách hàng biến thái. Đạt danh hiệu "Nhân viên tận tụy nhất khu phố" do hội anh em LGBT trao tặng.</p>
+                <span class="tag">3 Năm Kinh Nghiệm</span>
+            </div>
+
+            <!-- Kinh nghiệm 2 -->
+            <div class="card-box">
+                <i class="fa-solid fa-skull-crossbones"></i>
+                <h3>Có kinh nghiệm trong việc phá vi điều khiển</h3>
+                <p><strong>trong 2 ngày em cường phá hơn 6 con vi điều khiển và vài con cảm biến quá toẹt vời ==)))) hẹ hẹ</strong></p>
+                <span class="tag">Kinh Nghiệm Phá Đồ</span>
+            </div>
+
+            <!-- Kinh nghiệm 3 -->
+            <div class="card-box">
+                <i class="fa-solid fa-award"></i>
+                <h3>Chuyên Gia "Bái Tre"</h3>
+                <p><strong>2023 - Nay:</strong> Chế Cường chuyên chăn dắt bái tre yêu thương các em rất nhiều bé k11 k12 qua tay em cường =))</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thư viện gõ chữ tự động -->
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+    <script>
+        // Hiệu ứng gõ chữ
+        const typed = new Typed('.multiple-text', {
+            strings: ['Tôi là 1 cậu bé biến thái bé nhỏ', '1 thằng sivi tự động hóa đbrr', 'con nghiện liqi'],
+            typeSpeed: 90,
+            backSpeed: 90,
+            backDelay: 1000,
+            loop: true
+        });
+
+        // CHUYỂN TAB MƯỢT KHÔNG CUỘN
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+
+            navItems.forEach(item => {
+                if (item.getAttribute('onclick').includes(tabId)) {
+                    item.classList.add('active');
+                }
+            });
+
+            menuIcon.classList.remove('fa-xmark');
+            navbar.classList.remove('active');
+        }
+
+        // Bật/Tắt Menu mobile
+        const menuIcon = document.querySelector('#menu-icon');
+        const navbar = document.querySelector('.navbar');
+
+        menuIcon.onclick = () => {
+            menuIcon.classList.toggle('fa-xmark');
+            navbar.classList.toggle('active');
+        };
+
+        // Quản lý Phát Nhạc
+        const music = document.getElementById('bg-music');
+        const musicControl = document.getElementById('music-control');
+        const overlay = document.getElementById('welcome-overlay');
+
+        function startWebsite() {
+            music.play().then(() => {
+                musicControl.classList.add('music-spin');
+            }).catch(err => {
+                console.log("Lỗi nhạc:", err);
+            });
+            overlay.classList.add('hide');
+        }
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                musicControl.classList.add('music-spin');
+            } else {
+                music.pause();
+                musicControl.classList.remove('music-spin');
+            }
+        }
+    </script>
+</body>
+</html>
